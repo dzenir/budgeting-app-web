@@ -1,0 +1,79 @@
+.dashboard {
+  max-width: 700px;
+  margin: auto;
+  padding: 2rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.card {
+  flex: 1;
+  min-width: 200px;
+  background: white;
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.currency-switch {
+  margin: 1rem 0;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.currency-switch button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: #eee;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.currency-switch .active {
+  background: #111;
+  color: white;
+}
+
+.add-button {
+  background: #111;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.form input, .form select {
+  padding: 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.transactions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.transaction {
+  display: flex;
+  justify-content: space-between;
+  background: white;
+  padding: 0.75rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
