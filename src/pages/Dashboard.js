@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './DashboardPage.css';
 import { fetchTransactions, addTransaction } from '../services/firebaseService';
 import TransactionItem from '../components/TransactionItem';
+import TransactionForm from '../components/TransactionForm';
 
 export default function DashboardPage() {
   const [transactions, setTransactions] = useState([]);
@@ -9,10 +10,12 @@ export default function DashboardPage() {
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({
     type: 'Income',
-    category: '',
+    mainCategory: '',
+    subCategory: '',
     amount: '',
     description: '',
     recurring: false,
+    paymentMethod: '',
   });
 
   const userId = localStorage.getItem('userId');
@@ -28,8 +31,8 @@ export default function DashboardPage() {
   }, [userId]);
 
   const handleSubmit = async () => {
-    if (!form.category || !form.amount) {
-      alert('Please enter both category and amount.');
+    if (!form.mainCategory || !form.subCategory || !form.amount) {
+      alert('Please fill in all required fields.');
       return;
     }
 
@@ -42,22 +45,28 @@ export default function DashboardPage() {
     await addTransaction(userId, data);
     const updated = await fetchTransactions(userId);
     setTransactions(updated);
+
+    // Reset the form
     setShowForm(false);
     setForm({
       type: 'Income',
-      category: '',
+      mainCategory: '',
+      subCategory: '',
       amount: '',
       description: '',
       recurring: false,
+      paymentMethod: '',
     });
   };
 
   const totalIncome = transactions
     .filter(t => t.type === 'Income')
     .reduce((sum, t) => sum + t.amount, 0);
+
   const totalExpense = transactions
     .filter(t => t.type === 'Expense')
     .reduce((sum, t) => sum + t.amount, 0);
+
   const balance = totalIncome - totalExpense;
 
   return (
@@ -96,39 +105,7 @@ export default function DashboardPage() {
       </button>
 
       {showForm && (
-        <div className="form">
-          <select onChange={e => setForm(f => ({ ...f, type: e.target.value }))}>
-            <option value="Income">Income</option>
-            <option value="Expense">Expense</option>
-          </select>
-          <input
-            type="text"
-            placeholder="Category"
-            value={form.category}
-            onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
-          />
-          <input
-            type="number"
-            placeholder="Amount"
-            value={form.amount}
-            onChange={e => setForm(f => ({ ...f, amount: e.target.value }))}
-          />
-          <input
-            type="text"
-            placeholder="Description (optional)"
-            value={form.description}
-            onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
-          />
-          <label>
-            <input
-              type="checkbox"
-              checked={form.recurring}
-              onChange={e => setForm(f => ({ ...f, recurring: e.target.checked }))}
-            />
-            Recurring monthly
-          </label>
-          <button onClick={handleSubmit}>Save</button>
-        </div>
+        <TransactionForm form={form} setForm={setForm} onSubmit={handleSubmit} />
       )}
 
       <h3>Recent Transactions:</h3>

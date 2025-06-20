@@ -1,79 +1,175 @@
-.dashboard {
-  max-width: 700px;
-  margin: auto;
-  padding: 2rem;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+body {
   font-family: 'Inter', sans-serif;
+  background-color: #f9f9f9;
+  margin: 0;
+}
+
+.dashboard {
+  padding: 2rem 1rem;
+  max-width: 960px;
+  margin: 0 auto;
+  color: #111827;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
 }
 
 .cards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .card {
-  flex: 1;
-  min-width: 200px;
-  background: white;
-  border-radius: 16px;
-  padding: 1rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  background: #fff;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card p {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+}
+
+.card h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
 }
 
 .currency-switch {
-  margin: 1rem 0;
   display: flex;
+  justify-content: center;
   gap: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .currency-switch button {
   padding: 0.5rem 1rem;
-  border: none;
-  background: #eee;
-  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  background: white;
+  border-radius: 9999px;
+  font-weight: 500;
+  color: #374151;
   cursor: pointer;
+  transition: 0.2s ease;
 }
 
-.currency-switch .active {
-  background: #111;
+.currency-switch button:hover {
+  background: #f3f4f6;
+}
+
+.currency-switch button.active {
+  background: #111827;
   color: white;
+  border-color: #111827;
 }
 
 .add-button {
-  background: #111;
+  display: block;
+  margin: 1rem auto 2rem;
+  padding: 0.75rem 1.5rem;
+  background: #111827;
   color: white;
+  font-weight: 600;
+  font-size: 1rem;
   border: none;
-  padding: 0.8rem 1.5rem;
-  border-radius: 10px;
+  border-radius: 0.75rem;
   cursor: pointer;
-  font-weight: bold;
-  margin-bottom: 1rem;
+  transition: background 0.2s ease;
 }
 
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  margin-bottom: 1rem;
-}
-
-.form input, .form select {
-  padding: 0.6rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+.add-button:hover {
+  background: #1f2937;
 }
 
 .transactions {
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
+  margin-top: 2rem;
 }
 
-.transaction {
+.transactions h3 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.transaction-item {
+  background: #fff;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
   display: flex;
   justify-content: space-between;
-  background: white;
-  padding: 0.75rem;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  align-items: center;
+}
+
+.transaction-item .details {
+  display: flex;
+  flex-direction: column;
+}
+
+.transaction-item .name {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.transaction-item .category {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.transaction-item .amount {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+@media (max-width: 640px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  .currency-switch {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .timestamp {
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+.transaction-item {
+  background: #fff;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.transaction-item .row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
+}
+
+.transaction-item .label {
+  font-weight: 500;
+  color: #6b7280;
+}
+
 }
