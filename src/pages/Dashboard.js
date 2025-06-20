@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import './DashboardPage.css'; // we'll style it separately
-import { db } from '../firebase'; // instead of '../firebaseConfig'
-import { collection, addDoc, getDocs } from 'firebase/firestore';
+import './DashboardPage.css';
+import { fetchTransactions, addTransaction } from '../services/firebaseService';
+import TransactionItem from '../components/TransactionItem';
 
 export default function DashboardPage() {
   const [transactions, setTransactions] = useState([]);
@@ -17,30 +17,47 @@ export default function DashboardPage() {
 
   const userId = localStorage.getItem('userId');
 
-  const fetchTransactions = async () => {
-    const snapshot = await getDocs(collection(db, 'users', userId, 'transactions'));
-    const fetched = snapshot.docs.map(doc => doc.data());
-    setTransactions(fetched);
-  };
-
   useEffect(() => {
-    fetchTransactions();
-  }, []);
+    const loadTransactions = async () => {
+      if (!userId) return;
+      const data = await fetchTransactions(userId);
+      setTransactions(data);
+    };
+
+    loadTransactions();
+  }, [userId]);
 
   const handleSubmit = async () => {
-    const newTx = {
+    if (!form.category || !form.amount) {
+      alert('Please enter both category and amount.');
+      return;
+    }
+
+    const data = {
       ...form,
       amount: parseFloat(form.amount),
-      date: new Date().toLocaleDateString(),
+      createdAt: new Date(),
     };
-    await addDoc(collection(db, 'users', userId, 'transactions'), newTx);
-    setForm({ type: 'Income', category: '', amount: '', description: '', recurring: false });
+
+    await addTransaction(userId, data);
+    const updated = await fetchTransactions(userId);
+    setTransactions(updated);
     setShowForm(false);
-    fetchTransactions();
+    setForm({
+      type: 'Income',
+      category: '',
+      amount: '',
+      description: '',
+      recurring: false,
+    });
   };
 
-  const totalIncome = transactions.filter(t => t.type === 'Income').reduce((sum, t) => sum + t.amount, 0);
-  const totalExpense = transactions.filter(t => t.type === 'Expense').reduce((sum, t) => sum + t.amount, 0);
+  const totalIncome = transactions
+    .filter(t => t.type === 'Income')
+    .reduce((sum, t) => sum + t.amount, 0);
+  const totalExpense = transactions
+    .filter(t => t.type === 'Expense')
+    .reduce((sum, t) => sum + t.amount, 0);
   const balance = totalIncome - totalExpense;
 
   return (
@@ -116,19 +133,8 @@ export default function DashboardPage() {
 
       <h3>Recent Transactions:</h3>
       <div className="transactions">
-        {transactions.map((tx, idx) => (
-          <div key={idx} className="transaction">
-            <div>
-              <strong>{tx.category}</strong>
-              {tx.description && <small>{tx.description}</small>}
-            </div>
-            <div>
-              <span style={{ color: tx.type === 'Income' ? 'green' : 'red' }}>
-                {currency}{tx.amount.toFixed(2)}
-              </span>
-              <small>{tx.date}</small>
-            </div>
-          </div>
+        {transactions.map(transaction => (
+          <TransactionItem key={transaction.id} transaction={transaction} />
         ))}
       </div>
     </div>
