@@ -54,16 +54,20 @@
 
 .checkbox-row {
   display: flex;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.checkbox-row label {
+  display: flex;
   align-items: center;
   gap: 0.5rem;
   font-size: 0.9rem;
   color: #374151;
+  white-space: nowrap;
 }
 
 
-.checkbox-row input {
-  margin-right: 0.9rem;
-}
 .form button {
   background: #000000;
   color: white;
@@ -92,4 +96,25 @@
 
 .save-button:hover {
   background: #374151;
+}
+@media (max-width: 640px) {
+  .transaction-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .transaction-item .details {
+    margin-bottom: 0.5rem;
+  }
+
+  .transaction-item .amount,
+  .transaction-item .timestamp {
+    font-size: 0.9rem;
+  }
+
+  .transaction-item .meta {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
 }

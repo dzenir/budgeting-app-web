@@ -1,4 +1,5 @@
 import React from 'react';
+import './TransactionItem.css';
 
 function formatDate(timestamp) {
   if (!timestamp) return '';
@@ -14,29 +15,34 @@ function formatDate(timestamp) {
 
 export default function TransactionItem({ transaction }) {
   const isIncome = transaction.type === 'Income';
-  const amountColor = isIncome ? '#16a34a' : '#dc2626';
 
   return (
     <div className="transaction-item">
-      <div className="row">
-        <span className="label">Type:</span>
-        <span>{transaction.type}</span>
-      </div>
-      <div className="row">
-        <span className="label">Category:</span>
-        <span>{transaction.category || 'Uncategorized'}</span>
-      </div>
-      <div className="row">
-        <span className="label">Date:</span>
-        <span>{formatDate(transaction.createdAt)}</span>
-      </div>
-      <div className="row">
-        <span className="label">Amount:</span>
-        <span style={{ color: amountColor }}>
-          {transaction.currency || '€'}
-          {parseFloat(transaction.amount).toFixed(2)}
-        </span>
-      </div>
+  <div className="transaction-row">
+    <div className="transaction-label">Type:</div>
+    <div className="transaction-value">{transaction.type}</div>
+  </div>
+  <div className="transaction-row">
+    <div className="transaction-label">Category:</div>
+    <div className="transaction-value">{transaction.mainCategory || '—'}</div>
+  </div>
+  <div className="transaction-row">
+    <div className="transaction-label">Subcategory:</div>
+    <div className="transaction-value">{transaction.subCategory || '—'}</div>
+  </div>
+  <div className="transaction-row">
+    <div className="transaction-label">Date:</div>
+<div className="transaction-value">
+  {formatDate(transaction.date || transaction.createdAt)}
+</div>
+  </div>
+  <div className="transaction-row">
+    <div className="transaction-label">Amount:</div>
+    <div className="transaction-value" style={{ color: isIncome ? 'green' : 'red' }}>
+      {transaction.amount}
     </div>
+  </div>
+</div>
+
   );
 }

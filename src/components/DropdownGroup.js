@@ -1,19 +1,18 @@
 import React from 'react';
 
-export default function DropdownGroup({ label, value, onChange, options, placeholder }) {
+export default function DropdownGroup({ value, onChange, options, placeholder }) {
+  const flatOptions = options.flatMap(group => group.items);
+
   return (
-    <div>
-      <label>{label}</label>
-      <select value={value} onChange={onChange}>
-        <option value="">{placeholder}</option>
-        {options.map(group =>
-          group.items.map(item => (
-            <option key={item} value={item}>
-              {group.group ? `${group.group} – ${item}` : item}
-            </option>
-          ))
-        )}
-      </select>
-    </div>
+    <select className="full-width" value={value} onChange={onChange}>
+      {value === '' && (
+        <option value="" disabled hidden>{placeholder}</option>
+      )}
+      {flatOptions.map(item => (
+        <option key={item} value={item}>
+          {item}
+        </option>
+      ))}
+    </select>
   );
 }

@@ -46,7 +46,6 @@ export default function DashboardPage() {
     const updated = await fetchTransactions(userId);
     setTransactions(updated);
 
-    // Reset the form
     setShowForm(false);
     setForm({
       type: 'Income',
@@ -108,12 +107,19 @@ export default function DashboardPage() {
         <TransactionForm form={form} setForm={setForm} onSubmit={handleSubmit} />
       )}
 
-      <h3>Recent Transactions:</h3>
-      <div className="transactions">
-        {transactions.map(transaction => (
-          <TransactionItem key={transaction.id} transaction={transaction} />
-        ))}
-      </div>
+      <div className="dashboard-header">
+  <div className="transactions-header-wrapper">
+  <h3>Recent Transactions</h3>
+  <a href="/all-transactions" className="view-all-link-recent-transactions">View All</a>
+</div>
+</div>
+
+<div className="transactions-table">
+  {transactions.slice(0, 5).map(transaction => (
+    <TransactionItem key={transaction.id} transaction={transaction} />
+  ))}
+</div>
+
     </div>
   );
 }
